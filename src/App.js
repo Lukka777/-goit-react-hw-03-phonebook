@@ -17,6 +17,18 @@ class App extends React.Component {
     name: "",
     number: "",
   };
+  componentDidMount() {
+    const contacts = localStorage.getItem("contacts");
+    const parsedContacts = JSON.parse(contacts);
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
+    }
+  }
   render() {
     return (
       <>
@@ -53,7 +65,7 @@ class App extends React.Component {
       contacts: [...this.state.contacts, { name, phone, id }],
       name: "",
       number: "",
-    });
+    }).componentDidMount(localStorage.setItem());
   };
   onChangeName = (event) => {
     this.setState({ ...this.state, name: event.target.value });
